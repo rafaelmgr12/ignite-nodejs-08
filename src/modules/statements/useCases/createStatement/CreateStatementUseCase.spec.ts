@@ -31,6 +31,7 @@ describe("[Create a new statement service]", () => {
     const user: any = await createUserUseCase.execute(newUser);
     const statement1: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.DEPOSIT,
       amount: 100,
       description: "Deposit 100",
@@ -48,6 +49,7 @@ describe("[Create a new statement service]", () => {
     const user: any = await createUserUseCase.execute(newUser);
     const statement1: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.DEPOSIT,
       amount: 100,
       description: "Deposit 100",
@@ -55,6 +57,7 @@ describe("[Create a new statement service]", () => {
     await createStatementUseCase.execute(statement1);
     const statement2: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.WITHDRAW,
       amount: 50,
       description: "Withdraw 50",
@@ -73,6 +76,7 @@ describe("[Create a new statement service]", () => {
     expect(async () => {
       const statement3: ICreateStatementDTO = {
         user_id: user.id,
+        operator: user.id,
         type: OperationType.WITHDRAW,
         amount: 100,
         description: "Withdraw 100",
@@ -84,6 +88,7 @@ describe("[Create a new statement service]", () => {
     expect(async () => {
       const statement4: ICreateStatementDTO = {
         user_id: "invalidUser",
+        operator: "invalidSender",
         type: OperationType.DEPOSIT,
         amount: 100,
         description: "Deposit 100",

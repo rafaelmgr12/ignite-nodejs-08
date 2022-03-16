@@ -38,6 +38,7 @@ describe("[Show statement operation service]", () => {
     const user: any = await createUserUseCase.execute(newUser);
     const statement: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.DEPOSIT,
       amount: 100,
       description: "Deposit 100",

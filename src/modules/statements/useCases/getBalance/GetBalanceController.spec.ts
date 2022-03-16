@@ -1,3 +1,5 @@
+
+  
 import "reflect-metadata";
 import { CreateUserUseCase } from "@src/modules/users/useCases/createUser/CreateUserUseCase";
 import request from "supertest";
@@ -32,6 +34,7 @@ describe("Show Balance", () => {
       .post("/statements/deposit")
       .send({
         user_id: newUser.id,
+        operator: newUser.id,
         amount: 100,
         description: "Deposit 100",
       })
@@ -42,6 +45,7 @@ describe("Show Balance", () => {
       .post("/statements/withdraw")
       .send({
         user_id: newUser.id,
+        operator: newUser.id,
         amount: 50,
         description: "Withdraw 50",
       })

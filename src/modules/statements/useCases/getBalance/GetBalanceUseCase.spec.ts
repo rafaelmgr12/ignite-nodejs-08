@@ -39,6 +39,7 @@ describe("[Show user balance service]", () => {
 
     const statement1: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.DEPOSIT,
       amount: 100,
       description: "Deposit 100",
@@ -46,6 +47,7 @@ describe("[Show user balance service]", () => {
     await createStatementUseCase.execute(statement1);
     const statement2: ICreateStatementDTO = {
       user_id: user.id,
+      operator: user.id,
       type: OperationType.WITHDRAW,
       amount: 50,
       description: "Withdraw 50",
@@ -60,6 +62,7 @@ describe("[Show user balance service]", () => {
     expect(async () => {
       const statement3: ICreateStatementDTO = {
         user_id: user.id,
+        operator: user.id,
         type: OperationType.WITHDRAW,
         amount: 100,
         description: "Withdraw 50",
