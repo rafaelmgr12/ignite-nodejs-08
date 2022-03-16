@@ -1,28 +1,44 @@
+import { AppError } from "@src/shared/errors/AppError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { ICreateUserDTO } from "../createUser/ICreateUserDTO";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
-let authenticateUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
+let authenticateUserUseCase: AuthenticateUserUseCase;
 
-describe('Authenticate user', () => {
+describe("[Authenticate user service]", () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    authenticateUserUseCase = new AuthenticateUserUseCase(inMemoryUsersRepository);
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
+    authenticateUserUseCase = new AuthenticateUserUseCase(
+      inMemoryUsersRepository
+    );
   });
-
-  it('should be able to authenticate a valid user', async () => {
-    const user = {
-      name: 'User name',
-      email: 'email@mail.com',
-      password: 'senhasuperdificil'
-    }
-
-    await createUserUseCase.execute(user);
-    const result = await authenticateUserUseCase.execute({ email: user.email, password: user.password });
-
-    expect(result).toHaveProperty('token');
+  it("Should be able to authenticate an user", async () => {
+    const newUser: ICreateUserDTO = {
+      name: "User2",
+      email: "user2@example.com",
+      password: "userPassword",
+    };
+    await createUserUseCase.execute(newUser);
+    const result = await authenticateUserUseCase.execute({
+      email: newUser.email,
+      password: newUser.password,
+    });
+    expect(result).toHaveProperty("token");
+  });
+  it("Should not be able to authenticate an invalid user", async () => {
+    expect(async () => {
+      const invalidUser = {
+        email: "invalidUser@example.com",
+        password: "invalidUserPassword",
+      };
+      await authenticateUserUseCase.execute({
+        email: invalidUser.email,
+        password: invalidUser.password,
+      });
+    }).rejects.toBeInstanceOf(AppError);
   });
 });

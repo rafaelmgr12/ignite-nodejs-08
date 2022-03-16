@@ -1,4 +1,4 @@
-FROM node:14.17.6
+FROM node
 
 WORKDIR /usr/app
 
@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 3333
 
-CMD ["npm","run", "dev"]
+CMD ["npm", "run", "dev"]
+

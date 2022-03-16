@@ -1,40 +1,34 @@
-import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
-import { AuthenticateUserUseCase } from "../../../users/useCases/authenticateUser/AuthenticateUserUseCase";
-import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
-import { ICreateUserDTO } from "../../../users/useCases/createUser/ICreateUserDTO";
+import { InMemoryUsersRepository } from "@src/modules/users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "@src/modules/users/useCases/createUser/CreateUserUseCase";
+import { ICreateUserDTO } from "@src/modules/users/useCases/createUser/ICreateUserDTO";
+import { AppError } from "@src/shared/errors/AppError";
+import { OperationType } from "../../entities/Statement";
 import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
 import { CreateStatementUseCase } from "../createStatement/CreateStatementUseCase";
 import { ICreateStatementDTO } from "../createStatement/ICreateStatementDTO";
 import { GetBalanceUseCase } from "./GetBalanceUseCase";
-import { OperationType } from "../../entities/Statement";
 import { IGetBalanceDTO } from "./IGetBalanceDTO";
-import { AppError } from "../../../../shared/errors/AppError";
 
-let createUserUseCase: CreateUserUseCase;
-let getBalanceUseCase: GetBalanceUseCase;
-let authenticateUserUseCase: AuthenticateUserUseCase;
-let createStatementUseCase: CreateStatementUseCase;
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let createUserUseCase: CreateUserUseCase;
 let inMemoryStatementsRepository: InMemoryStatementsRepository;
+let createStatementUseCase: CreateStatementUseCase;
+let getBalanceUseCase: GetBalanceUseCase;
 
-describe("Get a Balance", () => {
+describe("[Show user balance service]", () => {
   beforeEach(() => {
-    inMemoryStatementsRepository = new InMemoryStatementsRepository();
     inMemoryUsersRepository = new InMemoryUsersRepository();
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
-    authenticateUserUseCase = new AuthenticateUserUseCase(
-      inMemoryUsersRepository
+    inMemoryStatementsRepository = new InMemoryStatementsRepository();
+    createStatementUseCase = new CreateStatementUseCase(
+      inMemoryUsersRepository,
+      inMemoryStatementsRepository
     );
     getBalanceUseCase = new GetBalanceUseCase(
       inMemoryStatementsRepository,
       inMemoryUsersRepository
     );
-    createStatementUseCase = new CreateStatementUseCase(
-      inMemoryUsersRepository,
-      inMemoryStatementsRepository
-    );
   });
-
   it("Should be able to show an user balance", async () => {
     const newUser: ICreateUserDTO = {
       name: "User1",
@@ -85,4 +79,3 @@ describe("Get a Balance", () => {
     }).rejects.toBeInstanceOf(AppError);
   });
 });
-
